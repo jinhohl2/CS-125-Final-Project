@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViewById(R.id.diagnose).setOnClickListener(v -> {
             Intent intent = new Intent(this, DiagnoseActivity.class);
+            intent.putExtra("id", "green");
             startActivity(intent);
             finish();
         });
