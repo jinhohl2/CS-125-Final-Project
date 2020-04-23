@@ -1,8 +1,10 @@
 package com.example.finalproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import java.io.BufferedReader;
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViewById(R.id.diagnose).setOnClickListener(v -> {
             Intent intent = new Intent(this, DiagnoseActivity.class);
-            intent.putExtra("id", "green");
+            intent.putExtra("id", "");
             startActivity(intent);
             finish();
         });
@@ -28,9 +30,21 @@ public class MainActivity extends AppCompatActivity {
             Intent tent = new Intent(this, RelatedLinksActivity.class);
             startActivity(tent);
             finish();
-
+        });
+        findViewById(R.id.EmergencyCall).setOnClickListener(v -> {
+            dialContactPhone("1339");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Do you want to call 1339 for an immediate medical aid?");
+            builder.setPositiveButton("Call", (unused1, unused2) -> dialContactPhone("1339"));
+            builder.setNegativeButton("Cancel", null);
+            builder.create().show();
         });
 
+
+    }
+
+    private void dialContactPhone(final String phoneNumber) {
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
 }
 

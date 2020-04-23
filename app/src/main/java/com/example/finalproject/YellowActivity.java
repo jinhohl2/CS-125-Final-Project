@@ -15,8 +15,8 @@ public class YellowActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.textView10);
         Intent item = getIntent();
         String id = item.getStringExtra("id");
-        if (id.equals("danger")) {
-            text.setText("danger");
+        if (id.equals("Danger")) {
+            text.setText("Danger");
         }
         findViewById(R.id.diagnose).setOnClickListener(v -> {
             Intent intent = new Intent(this, DiagnoseActivity.class);

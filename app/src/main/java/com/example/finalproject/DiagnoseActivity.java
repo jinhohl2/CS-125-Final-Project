@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -58,12 +59,17 @@ public class DiagnoseActivity extends AppCompatActivity {
         findViewById(R.id.sendButton).setOnClickListener(v -> {
             if (count > 1 && mode.equals("yellow")) {
                 Intent yellow = new Intent(this, YellowActivity.class);
-                yellow.putExtra("id", "danger");
-                startActivity(yellow);
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Coronavirus contagion suspected. Please visit the nearest hospital or call 1339 for emergency medical aid.");
+                builder.setOnDismissListener(unused -> {
+                    yellow.putExtra("id", "Danger");
+                    startActivity(yellow);
+                });
+                builder.create().show();
+
             } else if (count > 1) {
                 Intent yellow = new Intent(this, YellowActivity.class);
-                yellow.putExtra("id", "caution");
+                yellow.putExtra("id", "Caution");
                 startActivity(yellow);
                 finish();
             } else {

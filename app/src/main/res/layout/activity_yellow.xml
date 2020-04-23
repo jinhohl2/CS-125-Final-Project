@@ -86,7 +86,7 @@
         android:layout_marginEnd="326dp"
         android:layout_marginRight="326dp"
         android:layout_marginBottom="27dp"
-        android:text="Yellow"
+        android:text="Caution"
         app:layout_constraintBottom_toTopOf="@+id/diagnose"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
