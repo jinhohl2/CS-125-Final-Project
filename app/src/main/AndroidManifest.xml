@@ -16,8 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DiagnoseActivity"/>
         <activity android:name=".YellowActivity"/>
-        <activity android:name=".Diagnose" />
+        <activity android:name=".RelatedLinksActivity"/>
     </application>
 
 </manifest>

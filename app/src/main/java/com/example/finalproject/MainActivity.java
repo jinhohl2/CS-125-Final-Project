@@ -4,13 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -20,40 +13,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TEXT = "text";
-    private String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        String symptom = intent.getStringExtra("symptom");
-        saveData(symptom);
-        if (symptom.equals("o")) {
-            Intent yellow = new Intent(this, YellowActivity.class);
-            startActivity(yellow);
-            finish();
-        }
         findViewById(R.id.diagnose).setOnClickListener(v -> {
-            Intent diagnose = new Intent(this, Diagnose.class);
-            startActivity(diagnose);
+            Intent intent = new Intent(this, DiagnoseActivity.class);
+            startActivity(intent);
+            finish();
+        });
+        findViewById(R.id.relatedLinks).setOnClickListener(v -> {
+            Intent tent = new Intent(this, RelatedLinksActivity.class);
+            startActivity(tent);
             finish();
 
         });
 
-    }
-    public void saveData(String string) {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString(TEXT, string);
-    }
-    public String loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        text = sharedPreferences.getString(TEXT, "");
-        return text;
     }
 }
 
