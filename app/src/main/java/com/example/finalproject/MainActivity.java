@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -15,6 +19,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
+    Button btnLogout;
+    FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthtateListner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Call", (unused1, unused2) -> dialContactPhone("1339"));
             builder.setNegativeButton("Cancel", null);
             builder.create().show();
+        });
+        btnLogout = findViewById(R.id.logout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intToLogin = new Intent (MainActivity.this, Login.class);
+                startActivity(intToLogin);
+            }
         });
 
 
