@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/goLogin"
         android:layout_width="205dp"
         android:layout_height="18dp"
         android:layout_marginStart="168dp"
@@ -55,10 +55,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/signUp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="166dp"
@@ -68,7 +68,7 @@
         android:layout_marginRight="157dp"
         android:layout_marginBottom="80dp"
         android:text="Signup"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
+        app:layout_constraintBottom_toTopOf="@+id/goSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
