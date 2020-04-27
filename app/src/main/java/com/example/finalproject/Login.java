@@ -68,7 +68,6 @@ public class Login extends AppCompatActivity {
                                 validateDetails(email, "green", nick);
                                 Intent i = new Intent(Login.this, MainActivity.class);
                                 startActivity(i);
-
                             }
                         }
                     });

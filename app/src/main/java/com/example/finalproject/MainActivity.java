@@ -20,7 +20,9 @@ import com.google.android.gms.maps.model.LatLng;
 public class MainActivity extends AppCompatActivity {
 
     private GoogleMap map;
-    Button btnLogout;
+    private Button btnLogout;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthtateListner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +52,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-        btnLogout = findViewById(R.id.logout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intToLogin = new Intent (MainActivity.this, Login.class);
-                startActivity(intToLogin);
-            }
+        findViewById(R.id.logout).setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intToLogin = new Intent (MainActivity.this, Login.class);
+            startActivity(intToLogin);
         });
 
 
