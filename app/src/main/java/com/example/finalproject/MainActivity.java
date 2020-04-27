@@ -3,18 +3,17 @@ package com.example.finalproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity {
+
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
         findViewById(R.id.relatedLinks).setOnClickListener(v -> {
-            Intent tent = new Intent(this, RelatedLinksActivity.class);
-            startActivity(tent);
+            Intent intent = new Intent(this, RelatedLinksActivity.class);
+            startActivity(intent);
             finish();
         });
         findViewById(R.id.EmergencyCall).setOnClickListener(v -> {
@@ -38,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Call", (unused1, unused2) -> dialContactPhone("1339"));
             builder.setNegativeButton("Cancel", null);
             builder.create().show();
+        });
+        findViewById(R.id.map).setOnClickListener(v -> {
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+            finish();
         });
 
 
