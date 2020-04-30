@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -95,6 +96,13 @@ public class MapActivity extends AppCompatActivity {
                 .strokeColor(Color.BLACK)
                 .strokeWidth(2);
         Circle position = map.addCircle(o);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                position.remove();
+            }
+        }, 4000);
     }
     private void setUpMap() {
         map.getUiSettings().setIndoorLevelPickerEnabled(false);

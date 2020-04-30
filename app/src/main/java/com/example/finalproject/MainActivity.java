@@ -2,7 +2,13 @@ package com.example.finalproject;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -20,9 +26,11 @@ import com.google.android.gms.maps.model.LatLng;
 public class MainActivity extends AppCompatActivity {
 
     private GoogleMap map;
-    private Button btnLogout;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthtateListner;
+    private BroadcastReceiver broadcastReceiver;
+    private static final float REQUIRED_LOCATION_ACCURACY = 28f;
+    private LatLng latLngToUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,23 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intToLogin);
         });
 
+        locationUpdate();
+    }
 
+    private void locationUpdate() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(final Context context, final Intent intent) {
+                Location location = intent.getParcelableExtra(LocationListener.UPDATE_DATA_ID);
+                if (map != null && location != null && location.hasAccuracy()
+                        && location.getAccuracy() < REQUIRED_LOCATION_ACCURACY) {
+                    latLngToUpdate = new LatLng(location.getLatitude(), location.getLongitude());
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter(LocationListener.UPDATE_ACTION));
     }
 
     private void dialContactPhone(final String phoneNumber) {
