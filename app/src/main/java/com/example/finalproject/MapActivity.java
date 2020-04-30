@@ -63,6 +63,7 @@ public class MapActivity extends AppCompatActivity {
                     markMyPosition(location);
                     ensureMapCentered(location);
                 }
+
             }
         };
 

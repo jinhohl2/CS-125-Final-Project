@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intToLogin = new Intent (MainActivity.this, Login.class);
             startActivity(intToLogin);
         });
-
         locationUpdate();
     }
 
