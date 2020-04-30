@@ -15,14 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 
 public class Login extends AppCompatActivity {
@@ -38,8 +32,8 @@ public class Login extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         emailId = findViewById(R.id.editText);
         password = findViewById(R.id.editText2);
-        btnSignUp = findViewById(R.id.button);
-        tvSignIn = findViewById(R.id.textView11);
+        btnSignUp = (Button) findViewById(R.id.signUp);
+        tvSignIn = findViewById(R.id.goLogin);
         nickname = findViewById(R.id.editText3);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +50,7 @@ public class Login extends AppCompatActivity {
                     emailId.setError("Please enter email id");
                     emailId.requestFocus();
                 }
-                else if (pwd.isEmpty()) {
+                if (pwd.isEmpty()) {
                     password.setError("Please enter your password");
                     password.requestFocus();
                 }
@@ -83,12 +77,9 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-        tvSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Login.this, LoginActivity.class);
-                startActivity(i);
-            }
+        tvSignIn.setOnClickListener(v -> {
+            Intent i = new Intent(Login.this, LoginActivity.class);
+            startActivity(i);
         });
 
     }

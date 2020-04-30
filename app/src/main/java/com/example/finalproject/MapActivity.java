@@ -53,6 +53,7 @@ public class MapActivity extends AppCompatActivity {
             setUpMap();
         });
 
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
