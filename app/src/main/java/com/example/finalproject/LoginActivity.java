@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.editText2);
         btnSignIn = findViewById(R.id.signUp);
         tvSignUp = findViewById(R.id.goSignUp);
-
+        /**
         mAuthStateListner = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -47,13 +47,14 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Please logged in", Toast.LENGTH_SHORT).show();
                 }
             }
-        };
+        }; */
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailId.getText().toString();
                 String pwd = password.getText().toString();
+                String nick = email.split("@")[0];
                 if (email.isEmpty()) {
                     emailId.setError("Please enter email id");
                     emailId.requestFocus();
@@ -74,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else {
                                 Intent intToHome = new Intent(LoginActivity.this, MainActivity.class);
+                                intToHome.putExtra("nick", nick);
                                 startActivity(intToHome);
                             }
                         }
@@ -92,8 +94,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    /**
     protected void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListner);
-    }
+    } */
 }

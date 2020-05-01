@@ -34,18 +34,14 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.editText2);
         btnSignUp = (Button) findViewById(R.id.signUp);
         tvSignIn = findViewById(R.id.goLogin);
-        nickname = findViewById(R.id.editText3);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = emailId.getText().toString();
                 String pwd = password.getText().toString();
-                String nick = nickname.getText().toString();
-                if (nick.isEmpty()) {
-                    nickname.setError("Please enter nickname");
-                    nickname.requestFocus();
-                }
+                String nick = email.split("@")[0];
+
                 if (email.isEmpty()) {
                     emailId.setError("Please enter email id");
                     emailId.requestFocus();
@@ -67,6 +63,7 @@ public class Login extends AppCompatActivity {
                             } else {
                                 validateDetails(email, "green", nick);
                                 Intent i = new Intent(Login.this, MainActivity.class);
+                                i.putExtra("nick", nick);
                                 startActivity(i);
                             }
                         }

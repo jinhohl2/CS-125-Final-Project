@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -22,6 +23,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,14 +43,33 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private static final float REQUIRED_LOCATION_ACCURACY = 28f;
     private LatLng latLngToUpdate;
+    private String nick = "";
+    DatabaseReference rootref;
+    List<User> userList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent it = getIntent();
+        nick = it.getStringExtra("nick");
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        userList = new ArrayList<>();
+        String status = getUserStatus();
+        if (status.equals("yellow")) {
+            findViewById(R.id.diagnose).setOnClickListener(v -> {
+                Intent intent = new Intent(this, DiagnoseActivity.class);
+                intent.putExtra("id", "yellow");
+                intent.putExtra("nick", nick);
+                startActivity(intent);
+                finish();
+            });
+        }
         findViewById(R.id.diagnose).setOnClickListener(v -> {
             Intent intent = new Intent(this, DiagnoseActivity.class);
-            intent.putExtra("id", "");
+            intent.putExtra("id", "green");
+            intent.putExtra("nick", nick);
             startActivity(intent);
             finish();
         });
@@ -86,6 +117,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void dialContactPhone(final String phoneNumber) {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
+    }
+    private String getUserStatus() {
+        rootref = FirebaseDatabase.getInstance().getReference("users");
+        rootref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userList.clear();
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    userList.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        for (User user : userList) {
+            if (nick.equals(user.getNick())) {
+                return user.getStatus();
+            }
+        }
+
+
+        return "";
     }
 }
 
