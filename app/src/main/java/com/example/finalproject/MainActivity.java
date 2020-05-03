@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 for (User item : userList) {
                     if (nick.equals(item.getNick())) {
-                        System.out.println(101);
                         status = item.getStatus();
                         System.out.println(status);
                     }
@@ -98,21 +97,22 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(userList.size() + "size");
         System.out.println(nick);
         System.out.println(status);
-        if (status.equals("yellow")) {
-            findViewById(R.id.diagnose).setOnClickListener(v -> {
+
+        findViewById(R.id.diagnose).setOnClickListener(v -> {
+            if (status.equals("yellow")) {
                 Intent intent = new Intent(this, DiagnoseActivity.class);
                 intent.putExtra("id", "yellow");
                 intent.putExtra("nick", nick);
                 startActivity(intent);
                 finish();
-            });
-        }
-        findViewById(R.id.diagnose).setOnClickListener(v -> {
-            Intent intent = new Intent(this, DiagnoseActivity.class);
-            intent.putExtra("id", "green");
-            intent.putExtra("nick", nick);
-            startActivity(intent);
-            finish();
+            } else {
+                Intent intent = new Intent(this, DiagnoseActivity.class);
+                intent.putExtra("id", "green");
+                intent.putExtra("nick", nick);
+                startActivity(intent);
+                finish();
+            }
+
         });
         findViewById(R.id.relatedLinks).setOnClickListener(v -> {
             Intent intent = new Intent(this, RelatedLinksActivity.class);
