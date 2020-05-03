@@ -61,10 +61,11 @@ public class Login extends AppCompatActivity {
                             if(!task.isSuccessful()) {
                                 Toast.makeText(Login.this, "SignUp Unsuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
                             } else {
-                                validateDetails(email, "green", nick);
+                                validateDetails(email, "green", nick, "");
                                 Intent i = new Intent(Login.this, MainActivity.class);
                                 i.putExtra("nick", nick);
                                 startActivity(i);
+                                finish();
                             }
                         }
                     });
@@ -80,10 +81,10 @@ public class Login extends AppCompatActivity {
         });
 
     }
-    private void validateDetails(final String email, final String status, final String nick) {
+    private void validateDetails(final String email, final String status, final String nick, final String location) {
         final DatabaseReference rootref;
         rootref = FirebaseDatabase.getInstance().getReference("users");
-        User user = new User(email, status, nick);
+        User user = new User(email, status, nick, location);
         rootref.child(nick).setValue(user);
     }
 }

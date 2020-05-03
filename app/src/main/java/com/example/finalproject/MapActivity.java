@@ -12,6 +12,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -25,6 +27,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -40,6 +45,8 @@ public class MapActivity extends AppCompatActivity {
 
     private GoogleMap map;
 
+    private String nick;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,7 @@ public class MapActivity extends AppCompatActivity {
             setUpMap();
         });
 
+        nick = getIntent().getStringExtra("nick");
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -62,6 +70,7 @@ public class MapActivity extends AppCompatActivity {
                         && location.getAccuracy() < REQUIRED_LOCATION_ACCURACY) {
                     markMyPosition(location);
                     ensureMapCentered(location);
+                    updateMyPosition(location);
                 }
 
             }
@@ -82,6 +91,19 @@ public class MapActivity extends AppCompatActivity {
             startLocationWatching();
         }
     }
+
+    private void updateMyPosition(final Location location) {
+        LatLng latLngToUpdate = new LatLng(location.getLatitude(), location.getLongitude());
+        final DatabaseReference rootref;
+        rootref = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference userRef = rootref.child(nick);
+        Map<String, Object> userUpdates = new HashMap<>();
+        String locUpdate = String.valueOf(latLngToUpdate.latitude) + ", " + String.valueOf(latLngToUpdate.longitude);
+        System.out.println(locUpdate);
+        userUpdates.put("location", locUpdate);
+        userRef.updateChildren(userUpdates);
+    }
+
 
     /**
      * Mark the position of device owner with blue circle on location updates.

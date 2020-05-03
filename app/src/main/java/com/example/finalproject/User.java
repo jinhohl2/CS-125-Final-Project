@@ -3,18 +3,25 @@ package com.example.finalproject;
 import com.google.android.gms.maps.model.LatLng;
 
 public class User {
-    String email, status, nick;
+    String email, status, nick, location;
     User() {
         
     }
 
-    public User(String email, String status, String nick) {
+    public User(String email, String status, String nick, String location) {
         this.email = email;
         this.status = status;
         this.nick = nick;
+        this.location = location;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getNick() {
         return nick;

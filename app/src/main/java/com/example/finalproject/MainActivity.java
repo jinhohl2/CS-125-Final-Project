@@ -3,15 +3,20 @@ package com.example.finalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,12 +33,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,20 +51,22 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private static final float REQUIRED_LOCATION_ACCURACY = 28f;
     private LatLng latLngToUpdate;
-    private String nick = "";
+    private String nick;
     DatabaseReference rootref;
     List<User> userList;
+
+    String status = "Green";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent it = getIntent();
-        nick = it.getStringExtra("nick");
+        nick = getIntent().getStringExtra("nick");
         mFirebaseAuth = FirebaseAuth.getInstance();
         userList = new ArrayList<>();
-        String status = getUserStatus();
+        getUserStatus();
+        System.out.println(status);
         if (status.equals("yellow")) {
             findViewById(R.id.diagnose).setOnClickListener(v -> {
                 Intent intent = new Intent(this, DiagnoseActivity.class);
@@ -88,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.map).setOnClickListener(v -> {
             Intent intent = new Intent(this, MapActivity.class);
+            intent.putExtra("nick", nick);
             startActivity(intent);
             finish();
         });
@@ -96,37 +107,29 @@ public class MainActivity extends AppCompatActivity {
             Intent intToLogin = new Intent (MainActivity.this, Login.class);
             startActivity(intToLogin);
         });
-        locationUpdate();
-    }
-
-    private void locationUpdate() {
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(final Context context, final Intent intent) {
-                Location location = intent.getParcelableExtra(LocationListener.UPDATE_DATA_ID);
-                if (map != null && location != null && location.hasAccuracy()
-                        && location.getAccuracy() < REQUIRED_LOCATION_ACCURACY) {
-                    latLngToUpdate = new LatLng(location.getLatitude(), location.getLongitude());
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
-                new IntentFilter(LocationListener.UPDATE_ACTION));
     }
 
     private void dialContactPhone(final String phoneNumber) {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
-    private String getUserStatus() {
+    private void getUserStatus() {
         rootref = FirebaseDatabase.getInstance().getReference("users");
+        System.out.println(1);
         rootref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-                for(DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
-                    userList.add(user);
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
+                    System.out.println(2);
+                    if (user.getKey().equals(nick)) {
+                        for (DataSnapshot info : user.getChildren()) {
+                            System.out.println(3);
+                            if (info.getKey().equals("status")) {
+                                System.out.println(4);
+                                String s = info.getValue(String.class);
+                                status = s;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -135,14 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        for (User user : userList) {
-            if (nick.equals(user.getNick())) {
-                return user.getStatus();
-            }
-        }
-
-
-        return "";
     }
 }
 
