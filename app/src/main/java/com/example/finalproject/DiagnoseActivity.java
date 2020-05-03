@@ -100,6 +100,7 @@ public class DiagnoseActivity extends AppCompatActivity {
                 userUpdates.put("status", "yellow");
                 userRef.updateChildren(userUpdates);
 
+
                 Intent green = new Intent(this, MainActivity.class);
                 green.putExtra("nick", nick);
                 startActivity(green);

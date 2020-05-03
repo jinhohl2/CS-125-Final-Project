@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         userList = new ArrayList<>();
         rootref = FirebaseDatabase.getInstance().getReference("users");
-        System.out.println(1);
         rootref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
