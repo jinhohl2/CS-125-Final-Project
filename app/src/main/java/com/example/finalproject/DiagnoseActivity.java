@@ -83,6 +83,7 @@ public class DiagnoseActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Coronavirus contagion suspected. Please visit the nearest hospital or call 1339 for emergency medical aid.");
                 builder.setOnDismissListener(unused -> {
+                    green.putExtra("nick", nick);
                     startActivity(green);
                 });
                 builder.create().show();
@@ -96,6 +97,7 @@ public class DiagnoseActivity extends AppCompatActivity {
                 userRef.updateChildren(userUpdates);
 
                 Intent green = new Intent(this, MainActivity.class);
+                green.putExtra("nick", nick);
                 startActivity(green);
 
                 /**
@@ -106,6 +108,7 @@ public class DiagnoseActivity extends AppCompatActivity {
                  **/
             } else {
                 Intent main = new Intent(this, MainActivity.class);
+                main.putExtra("nick", nick);
                 startActivity(main);
                 finish();
             }

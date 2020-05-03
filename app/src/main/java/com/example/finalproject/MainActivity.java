@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private String nick;
     DatabaseReference rootref;
     List<User> userList;
+    TextView color;
 
     String status = "Green";
 
@@ -62,10 +64,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        color = findViewById(R.id.color);
         nick = getIntent().getStringExtra("nick");
         mFirebaseAuth = FirebaseAuth.getInstance();
         userList = new ArrayList<>();
+        rootref = FirebaseDatabase.getInstance().getReference("users");
+        System.out.println(1);
+        rootref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot user : dataSnapshot.getChildren()) {
+                    System.out.println(2);
+                    userList.add(user.getValue(User.class));
+                    System.out.println(2.5);
+                    System.out.println(userList.size() + "size");
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+        System.out.println(userList.size() + "size");
         getUserStatus();
+        System.out.println(nick);
         System.out.println(status);
         if (status.equals("yellow")) {
             findViewById(R.id.diagnose).setOnClickListener(v -> {
@@ -113,31 +137,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
     private void getUserStatus() {
-        rootref = FirebaseDatabase.getInstance().getReference("users");
-        System.out.println(1);
-        rootref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot user : dataSnapshot.getChildren()) {
-                    System.out.println(2);
-                    if (user.getKey().equals(nick)) {
-                        for (DataSnapshot info : user.getChildren()) {
-                            System.out.println(3);
-                            if (info.getKey().equals("status")) {
-                                System.out.println(4);
-                                String s = info.getValue(String.class);
-                                status = s;
-                            }
-                        }
-                    }
-                }
+        for (User user : userList) {
+            if (user.getNick().equals(nick)) {
+                status = user.getStatus();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        }
     }
 }
 
