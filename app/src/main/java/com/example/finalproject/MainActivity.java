@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     List<User> userList;
     TextView color;
 
-    String status = "Green";
+    String status;
 
 
     @Override
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         rootref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userList.clear();
                 for (DataSnapshot user : dataSnapshot.getChildren()) {
                     System.out.println(2);
                     userList.add(user.getValue(User.class));
@@ -81,6 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 }
+                for (User item : userList) {
+                    if (nick.equals(item.getNick())) {
+                        System.out.println(101);
+                        status = item.getStatus();
+                        System.out.println(status);
+                    }
+                }
             }
 
             @Override
@@ -88,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         System.out.println(userList.size() + "size");
-        getUserStatus();
         System.out.println(nick);
         System.out.println(status);
         if (status.equals("yellow")) {
@@ -136,13 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void dialContactPhone(final String phoneNumber) {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null)));
     }
-    private void getUserStatus() {
-        for (User user : userList) {
-            if (user.getNick().equals(nick)) {
-                status = user.getStatus();
-            }
-        }
-    }
+
 }
 
     /**

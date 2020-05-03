@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +21,7 @@ public class DiagnoseActivity extends AppCompatActivity {
     Switch coughButton;
     Switch throatButton;
     Switch diarrheaButton;
+    TextView color;
     int count = 0;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthtateListner;
@@ -31,10 +33,12 @@ public class DiagnoseActivity extends AppCompatActivity {
         coughButton = findViewById(R.id.coughButton);
         throatButton = findViewById(R.id.throatButton);
         diarrheaButton = findViewById(R.id.diarrheaButton);
+        color = findViewById(R.id.color);
         mFirebaseAuth = FirebaseAuth.getInstance();
         Intent intent = getIntent();
         String mode = intent.getStringExtra("id");
         String nick = intent.getStringExtra("nick");
+        color.setText(mode);
         tempButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
