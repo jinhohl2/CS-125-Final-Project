@@ -15,11 +15,9 @@ public class RelatedLinksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_related_link);
         findViewById(R.id.mckinley).setOnClickListener(v -> {
             openMckinley();
-            finish();
         });
         findViewById(R.id.cdc).setOnClickListener(v -> {
             openCDC();
-            finish();
         });
     }
     public void openMckinley() {

@@ -72,52 +72,86 @@ public class DiagnoseActivity extends AppCompatActivity {
             }
         });
         findViewById(R.id.sendButton).setOnClickListener(v -> {
-            if (count > 1 && mode.equals("yellow")) {
-                /**
-                Intent yellow = new Intent(this, YellowActivity.class);
-                 **/
-                final DatabaseReference rootref;
-                rootref = FirebaseDatabase.getInstance().getReference("users");
-                DatabaseReference userRef = rootref.child(nick);
-                Map<String, Object> userUpdates = new HashMap<>();
-                userUpdates.put("status", "red");
-                userRef.updateChildren(userUpdates);
+            if (mode.equals("red")) {
+                if (count > 1) {
+                    Intent rtr = new Intent(this, MainActivity.class);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("COVID-19 contagion suspected. Please visit the nearest hospital or call 1339 for emergency medical aid." + "Your location will be tracked when you turn on map.");
+                    builder.setOnDismissListener(unused -> {
+                        rtr.putExtra("nick", nick);
+                        startActivity(rtr);
+                    });
+                    builder.create().show();
+                } else {
+                    final DatabaseReference rootref;
+                    rootref = FirebaseDatabase.getInstance().getReference("users");
+                    DatabaseReference userRef = rootref.child(nick);
+                    Map<String, Object> userUpdates = new HashMap<>();
+                    userUpdates.put("status", "yellow");
+                    userRef.updateChildren(userUpdates);
 
-                Intent green = new Intent(this, MainActivity.class);
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Coronavirus contagion suspected. Please visit the nearest hospital or call 1339 for emergency medical aid.");
-                builder.setOnDismissListener(unused -> {
-                    green.putExtra("nick", nick);
-                    startActivity(green);
-                });
-                builder.create().show();
+                    Intent rty = new Intent(this, MainActivity.class);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("You are showing COVID-19 symptoms. Please abstain from outdoor activity." + "Your location will be tracked when you turn on map.");
+                    builder.setOnDismissListener(unused -> {
+                        rty.putExtra("nick", nick);
+                        startActivity(rty);
+                    });
+                    builder.create().show();
+                }
+            } else if (mode.equals("yellow")) {
+                if (count > 1) {
+                    final DatabaseReference rootref;
+                    rootref = FirebaseDatabase.getInstance().getReference("users");
+                    DatabaseReference userRef = rootref.child(nick);
+                    Map<String, Object> userUpdates = new HashMap<>();
+                    userUpdates.put("status", "red");
+                    userRef.updateChildren(userUpdates);
 
-            } else if (count > 1) {
-                final DatabaseReference rootref;
-                rootref = FirebaseDatabase.getInstance().getReference("users");
-                DatabaseReference userRef = rootref.child(nick);
-                Map<String, Object> userUpdates = new HashMap<>();
-                userUpdates.put("status", "yellow");
-                userRef.updateChildren(userUpdates);
+                    Intent ytr = new Intent(this, MainActivity.class);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("COVID-19 contagion suspected. Please visit the nearest hospital or call 1339 for emergency medical aid." + "Your location will be tracked when you turn on map.");
+                    builder.setOnDismissListener(unused -> {
+                        ytr.putExtra("nick", nick);
+                        startActivity(ytr);
+                    });
+                    builder.create().show();
+                } else {
+                    final DatabaseReference rootref;
+                    rootref = FirebaseDatabase.getInstance().getReference("users");
+                    DatabaseReference userRef = rootref.child(nick);
+                    Map<String, Object> userUpdates = new HashMap<>();
+                    userUpdates.put("status", "green");
+                    userRef.updateChildren(userUpdates);
 
-
-                Intent green = new Intent(this, MainActivity.class);
-                green.putExtra("nick", nick);
-                startActivity(green);
-
-                /**
-                Intent yellow = new Intent(this, YellowActivity.class);
-                yellow.putExtra("id", "Caution");
-                startActivity(yellow);
-                finish();
-                 **/
+                    Intent ytg = new Intent(this, MainActivity.class);
+                    ytg.putExtra("nick", nick);
+                    startActivity(ytg);
+                }
             } else {
-                Intent main = new Intent(this, MainActivity.class);
-                main.putExtra("nick", nick);
-                startActivity(main);
-                finish();
-            }
+                if (count > 1) {
+                    final DatabaseReference rootref;
+                    rootref = FirebaseDatabase.getInstance().getReference("users");
+                    DatabaseReference userRef = rootref.child(nick);
+                    Map<String, Object> userUpdates = new HashMap<>();
+                    userUpdates.put("status", "yellow");
+                    userRef.updateChildren(userUpdates);
 
+
+                    Intent gty = new Intent(this, MainActivity.class);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("You are showing COVID-19 symptoms. Please abstain from outdoor activity." + "Your location will be tracked when you turn on map.");
+                    builder.setOnDismissListener(unused -> {
+                        gty.putExtra("nick", nick);
+                        startActivity(gty);
+                    });
+                    builder.create().show();
+                } else {
+                    Intent gtg = new Intent(this, MainActivity.class);
+                    gtg.putExtra("nick", nick);
+                    startActivity(gtg);
+                }
+            }
         });
     }
 }

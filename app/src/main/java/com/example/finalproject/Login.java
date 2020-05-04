@@ -20,7 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class Login extends AppCompatActivity {
-    EditText emailId, password, nickname;
+    EditText emailId, password;
     Button btnSignUp;
     TextView tvSignIn;
     FirebaseAuth mFirebaseAuth;

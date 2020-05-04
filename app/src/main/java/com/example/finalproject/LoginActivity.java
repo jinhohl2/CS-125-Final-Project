@@ -15,14 +15,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     EditText emailId, password;
     Button btnSignIn;
     TextView tvSignUp;
     FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +31,6 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.editText2);
         btnSignIn = findViewById(R.id.signUp);
         tvSignUp = findViewById(R.id.goSignUp);
-        /**
-        mAuthStateListner = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if(mFirebaseUser != null) {
-                    Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);
-                }
-                else {
-                    Toast.makeText(LoginActivity.this, "Please logged in", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }; */
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +77,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    /**
-    protected void onStart() {
-        super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListner);
-    } */
 }

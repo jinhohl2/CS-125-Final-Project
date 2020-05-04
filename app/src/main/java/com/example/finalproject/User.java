@@ -1,13 +1,10 @@
 package com.example.finalproject;
 
-import com.google.android.gms.maps.model.LatLng;
 
 public class User {
     String email, status, nick, location;
     User() {
-        
     }
-
     public User(String email, String status, String nick, String location) {
         this.email = email;
         this.status = status;

@@ -120,7 +120,6 @@ public class MapActivity extends AppCompatActivity {
         DatabaseReference userRef = rootref.child(nick);
         Map<String, Object> userUpdates = new HashMap<>();
         String locUpdate = String.valueOf(latLngToUpdate.latitude) + "," + String.valueOf(latLngToUpdate.longitude);
-        System.out.println(locUpdate);
         userUpdates.put("location", locUpdate);
         userRef.updateChildren(userUpdates);
     }
@@ -146,7 +145,6 @@ public class MapActivity extends AppCompatActivity {
         rootref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                System.out.print("got to the listener");
                 userList.clear();
                 for (DataSnapshot user : dataSnapshot.getChildren()) {
                     userList.add(user.getValue(User.class));
@@ -156,7 +154,6 @@ public class MapActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-        System.out.println(userList.size());
         for (User u : userList) {
             if (u.getLocation().equals("") || u.getLocation() == null) {
                 continue;
